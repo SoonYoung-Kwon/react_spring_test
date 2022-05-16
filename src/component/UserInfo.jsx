@@ -1,18 +1,10 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const UserInfo = (props) => {
 
     const navigate = useNavigate();
-
-    const [resp, setResp] = useState([
-        {
-            id: '',
-            userId: '',
-            pw: ''
-        }
-    ]);
 
     const infoClick = () => {
 
@@ -26,13 +18,6 @@ const UserInfo = (props) => {
         })
         .then((response) => {
             console.log(response)
-            setResp((resp) => 
-                response.data.map((datas) => {
-                    ...resp,
-                    
-                }
-                )
-            )
             alert("Info Success")
         })
         .catch(() => {
