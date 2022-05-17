@@ -24,6 +24,13 @@ const App = () => {
           <Route path="/user/info" element={<UserInfo token={token} setUserId={setUserId} setToken={setToken}></UserInfo>}></Route>
         </Routes>
       </BrowserRouter>
+      <button onClick={() => { // localstorage에 넣었을 때 임의로 삭제 가능하도록 할 수 있다
+        localStorage.setItem('key', 'value')
+        setTimeout(() => {
+          console.log('delete')
+          localStorage.removeItem('key')
+        }, 10000)
+      }}>localstorage</button>
     </>
   );
 };

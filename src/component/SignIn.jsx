@@ -28,9 +28,9 @@ const SignIn = (props) => {
             userPw
         })
         .then((response) => {
-            console.log("ACCESS_TOKEN : " + response.data.access_TOKEN)
+            console.log("ACCESS_TOKEN : " + response.data.accessToken)
             props.setUserId(userId)
-            props.setToken(response.data.access_TOKEN)
+            props.setToken(response.data.accessToken)
             alert("SignIn Success")
             navigate('/user/info')
         })
