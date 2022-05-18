@@ -24,8 +24,8 @@ const SignIn = (props) => {
     const signInClick = () => {
 
         axios.post('http://localhost:8080/user/signIn', {
-            userId,
-            userPw
+            "userId": userId,
+            "userPw": userPw
         })
         .then((response) => {
             console.log("ACCESS_TOKEN : " + response.data.accessToken)
