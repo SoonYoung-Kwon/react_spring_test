@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 const SignIn = (props) => {
 
+    const REFRESH_TOKEN_TIME = 24 * 60 * 60 * 1000
+
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
@@ -33,12 +35,29 @@ const SignIn = (props) => {
             props.setAccessToken(response.data.accessToken)
             props.setRefreshToken(response.data.refreshToken)
             alert("SignIn Success")
+            // setTimeout(renewAccessToken, REFRESH_TOKEN_TIME - 60 * 1000) // 만료 전 갱신
             navigate('/user/info')
         })
         .catch(() => {
             alert("SignIn Failed")
         })
 
+    }
+
+    const renewAccessToken = () => {
+        axios.post('http://localhost:8080/renew',{
+            "userId": props.userId
+        },{
+            headers: {
+                REFRESH_TOKEN: props.refreshToken
+            }
+        })
+        .then((response) => {
+
+        })
+        .catch(() => {
+
+        })
     }
 
     return (
