@@ -11,7 +11,8 @@ import Header from './component/Header.jsx';
 const App = () => {
 
   const [userId, setUserId] = useState()
-  const [token, setToken] = useState()
+  const [accessToken, setAccessToken] = useState()
+  const [refreshToken, setRefreshToken] = useState()
 
   return (
     <>
@@ -20,17 +21,10 @@ const App = () => {
         <Routes>
           <Route path="/" component={<Home></Home>}/>
           <Route path="/signUp" element={<SignUp></SignUp>}/>
-          <Route path="/signIn" element={<SignIn setUserId={setUserId} setToken={setToken}></SignIn>}/>
-          <Route path="/user/info" element={<UserInfo token={token} setUserId={setUserId} setToken={setToken}></UserInfo>}></Route>
+          <Route path="/signIn" element={<SignIn setUserId={setUserId} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken}></SignIn>}/>
+          <Route path="/user/info" element={<UserInfo userId={userId} accessToken={accessToken} refreshToken={refreshToken} setUserId={setUserId} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken}></UserInfo>}></Route>
         </Routes>
       </BrowserRouter>
-      <button onClick={() => { // localstorage에 넣었을 때 임의로 삭제 가능하도록 할 수 있다
-        localStorage.setItem('key', 'value')
-        setTimeout(() => {
-          console.log('delete')
-          localStorage.removeItem('key')
-        }, 10000)
-      }}>localstorage</button>
     </>
   );
 };

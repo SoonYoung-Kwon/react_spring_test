@@ -30,7 +30,8 @@ const SignIn = (props) => {
         .then((response) => {
             console.log("ACCESS_TOKEN : " + response.data.accessToken)
             props.setUserId(userId)
-            props.setToken(response.data.accessToken)
+            props.setAccessToken(response.data.accessToken)
+            props.setRefreshToken(response.data.refreshToken)
             alert("SignIn Success")
             navigate('/user/info')
         })

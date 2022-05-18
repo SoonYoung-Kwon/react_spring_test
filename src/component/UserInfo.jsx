@@ -1,26 +1,41 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const UserInfo = (props) => {
 
     const navigate = useNavigate();
 
-    const [msg, setMsg] = useState();
-
     const infoClick = () => {
 
-        if(props.token === undefined)
+        if(props.accessToken === undefined)
             return alert("Undefind TOKEN")
-
         axios.get('http://localhost:8080/info',{
             headers: {
-                ACCESS_TOKEN: props.token
+                ACCESS_TOKEN: props.accessToken
             }
         })
         .then((response) => {
             console.log(response)
+            if(response.data.length === 0){ // 만료 되었을 떄 response 는 0개
+                axios.post('http://localhost:8080/renew',{
+                  "userId": props.userId  
+                },{
+                    headers: {
+                        REFRESH_TOKEN: props.refreshToken
+                    }
+                })
+                .then(((response) => {
+                    console.log("Renew ACCESS_TOKEN : " + response.data.accessToken)
+                    props.setAccessToken(response.data.accessToken)
+                    alert("Expired")
+                }))
+                .catch(() => {
+                    alert("Renew Failed")
+                })
+            }
             alert("Info Success")
+            return
         })
         .catch(() => {
             alert("Info Failed")
@@ -28,30 +43,10 @@ const UserInfo = (props) => {
 
     }
 
-    const msgClick = () => {
-
-        if(props.token === undefined)
-            return alert("Undefind TOKEN")
-
-        axios.get('http://localhost:8080/message',{
-            headers: {
-                ACCESS_TOKEN: props.token
-            }
-        })
-        .then((response) => {
-            console.log(response)
-            alert("Message Success")
-            setMsg(response.data)
-        })
-        .catch(() => {
-            alert("Message Failed")
-        })
-
-    }
-
     const signOut = () => {
         props.setUserId()
-        props.setToken()
+        props.setAccessToken()
+        props.setRefreshToken()
         alert("Sign Out")
         navigate('/')
     }
@@ -60,9 +55,7 @@ const UserInfo = (props) => {
         <>
             <h2>Info</h2>
             <button onClick={infoClick}>Info</button>
-            <button onClick={msgClick}>Msg</button>
             <button onClick={signOut}>Sign Out</button>
-            <div>{msg}</div>
         </>
     );
 };
